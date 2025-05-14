@@ -1,6 +1,6 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
-const { downloadYoutubeVideo } = require('./download');
+const { downloadWithYtDlp } = require('./downloadYtDlp');
 
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
@@ -17,7 +17,7 @@ bot.on('message', async (msg) => {
         console.log(`[LINK] Получена ссылка: ${text}`);
         bot.sendMessage(chatId, 'Скачиваю видео, подожди...');
         try {
-            const filePath = await downloadYoutubeVideo(text);
+            const filePath = await downloadWithYtDlp(text);
             console.log(`[SEND] Отправляю видео: ${filePath}`);
             await bot.sendVideo(chatId, filePath);
         } catch (error) {
